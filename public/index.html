@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monitoramento de Nível - Canal 1</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+    text-align: center;
+    padding: 20px;
+  }
+  .card {
+    background: white;
+    border-radius: 10px;
+    padding: 24px;
+    max-width: 520px;
+    margin: auto;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  .status {
+    padding: 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 22px;
+    margin-bottom: 15px;
+    transition: background-color 0.3s ease;
+  }
+  .alto    { background: #d4edda; color: #155724; }
+  .baixo   { background: #f8d7da; color: #721c24; }
+  .offline { background: #e2e3e5; color: #383d41; }
+  .grafico {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 15px;
+  }
+  small { color: #888; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h2>Monitoramento de Nível de Canal</h2>
+    <p><small>Canal 1</small></p>
+
+    <div id="statusBox" class="status offline">Aguardando dados...</div>
+    <p><small>Última leitura recebida em: <span id="ultimaHora">--</span></small></p>
+
+    <div class="grafico">
+      <b>Histórico do nível (últimas leituras)</b>
+      <canvas id="graficoNivel" height="180"></canvas>
+    </div>
+  </div>
+
+  <script>
+    const CANAL = 1;
+
+    const ctx = document.getElementById('graficoNivel').getContext('2d');
+    const grafico = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: 'Nível (1 = alto, 0 = baixo)',
+          data: [],
+          borderColor: '#28a745',
+          backgroundColor: 'rgba(40,167,69,0.15)',
+          stepped: true,
+          fill: true,
+          pointRadius: 2
+        }]
+      },
+      options: {
+        animation: false,
+        scales: {
+          y: { min: -0.1, max: 1.1, ticks: { stepSize: 1 } }
+        },
+        plugins: { legend: { display: false } }
+      }
+    });
+
+    async function atualizarStatus() {
+      try {
+        const respAtual = await fetch(`/api/leituras/atual?canal=${CANAL}`);
+        const atual = await respAtual.json();
+        const box = document.getElementById('statusBox');
+
+        if (!atual) {
+          box.className = 'status offline';
+          box.innerText = 'Nenhuma leitura recebida ainda';
+          return;
+        }
+
+        if (atual.nivel_alto) {
+          box.className = 'status alto';
+          box.innerText = 'NÍVEL ALTO';
+        } else {
+          box.className = 'status baixo';
+          box.innerText = 'NÍVEL BAIXO';
+        }
+        document.getElementById('ultimaHora').innerText = atual.criado_em;
+
+        const respHist = await fetch(`/api/leituras/historico?canal=${CANAL}&limite=50`);
+        const historico = await respHist.json();
+
+        grafico.data.labels = historico.map(l => (l.criado_em || '').slice(11, 19));
+        grafico.data.datasets[0].data = historico.map(l => l.nivel_alto);
+        grafico.update();
+      } catch (erro) {
+        console.log('Erro ao atualizar status', erro);
+      }
+    }
+
+    setInterval(atualizarStatus, 5000);
+    atualizarStatus();
+  </script>
+</body>
+</html>
