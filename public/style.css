@@ -308,3 +308,38 @@ body {
         font-size: 0.85rem;
     }
 }
+.topo {
+    justify-content: space-between;
+}
+
+.indicador-conexao {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: rgba(226, 232, 240, 0.8);
+}
+
+.bolinha {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #64748b;
+    transition: background 0.4s ease, box-shadow 0.4s ease;
+}
+
+.bolinha.online {
+    background: #4ade80;
+    box-shadow: 0 0 8px #4ade80;
+    animation: piscarOnline 2s infinite;
+}
+
+.bolinha.offline {
+    background: #f87171;
+    box-shadow: 0 0 8px #f87171;
+}
+
+@keyframes piscarOnline {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
