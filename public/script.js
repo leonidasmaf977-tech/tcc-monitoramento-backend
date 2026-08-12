@@ -1,10 +1,14 @@
 function formatarDataHora(dataSqlite) {
+    // O banco guarda em UTC (ex: "2026-08-09 20:47:58").
+    // Adicionamos "T" e "Z" pra o JavaScript entender que é UTC,
+    // e então convertemos pro horário de Brasília na exibição.
     const dataUtc = new Date(dataSqlite.replace(' ', 'T') + 'Z');
     return dataUtc.toLocaleString('pt-BR', {
         timeZone: 'America/Sao_Paulo',
         hour12: false
     });
 }
+
 async function buscarStatusAtual() {
     try {
         const resposta = await fetch('/api/leituras/atual');
@@ -56,11 +60,11 @@ async function buscarStatusAtual() {
         label.classList.toggle('pulso-critico', dado.nivel === 'critico');
 
         // Metadados
-        document.getElementById('metaUltimaAtualizacao').innerText = dado.criado_em;
+        document.getElementById('metaUltimaAtualizacao').innerText = formatarDataHora(dado.criado_em);
 
         // Indicador de conexão (Online/Offline baseado em quão recente foi a última leitura)
         const agora = new Date();
-        const ultimaLeitura = new Date(dado.criado_em.replace(' ', 'T'));
+        const ultimaLeitura = new Date(dado.criado_em.replace(' ', 'T') + 'Z');
         const segundosDesdeUltimaLeitura = (agora - ultimaLeitura) / 1000;
 
         if (segundosDesdeUltimaLeitura < 20) {
@@ -135,7 +139,7 @@ async function buscarHistorico() {
 
     const valores = dados.map(d => NIVEL_PARA_NUMERO[d.nivel]);
 
-    grafico.data.labels = dados.map(d => d.criado_em);
+    grafico.data.labels = dados.map(d => formatarDataHora(d.criado_em));
     grafico.data.datasets[0].data = valores;
     grafico.update();
 
