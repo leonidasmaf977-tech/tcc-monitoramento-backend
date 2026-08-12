@@ -1,3 +1,10 @@
+function formatarDataHora(dataSqlite) {
+    const dataUtc = new Date(dataSqlite.replace(' ', 'T') + 'Z');
+    return dataUtc.toLocaleString('pt-BR', {
+        timeZone: 'America/Sao_Paulo',
+        hour12: false
+    });
+}
 async function buscarStatusAtual() {
     try {
         const resposta = await fetch('/api/leituras/atual');
