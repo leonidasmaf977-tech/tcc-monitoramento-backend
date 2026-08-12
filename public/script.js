@@ -18,9 +18,14 @@ async function buscarStatusAtual() {
             critico: document.getElementById('zonaCritico')
         };
 
+        const bolinha = document.getElementById('bolinhaStatus');
+        const textoConexao = document.getElementById('textoConexao');
+
         if (!dado) {
             label.innerText = 'Nenhuma leitura ainda';
             label.classList.remove('pulso-critico');
+            bolinha.className = 'bolinha offline';
+            textoConexao.innerText = 'ESP32 Offline';
             return;
         }
 
@@ -45,6 +50,19 @@ async function buscarStatusAtual() {
 
         // Metadados
         document.getElementById('metaUltimaAtualizacao').innerText = dado.criado_em;
+
+        // Indicador de conexão (Online/Offline baseado em quão recente foi a última leitura)
+        const agora = new Date();
+        const ultimaLeitura = new Date(dado.criado_em.replace(' ', 'T'));
+        const segundosDesdeUltimaLeitura = (agora - ultimaLeitura) / 1000;
+
+        if (segundosDesdeUltimaLeitura < 20) {
+            bolinha.className = 'bolinha online';
+            textoConexao.innerText = 'ESP32 Online';
+        } else {
+            bolinha.className = 'bolinha offline';
+            textoConexao.innerText = 'ESP32 Offline';
+        }
 
     } catch (erro) {
         console.error('Erro:', erro);
