@@ -24,20 +24,6 @@ body {
     min-height: 100vh;
 }
 
-/* Efeito de brilho radial no fundo, sutil */
-.particulas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    opacity: 0.5;
-    background:
-        radial-gradient(circle at 10% 20%, var(--primaria) 0%, transparent 20%),
-        radial-gradient(circle at 90% 80%, var(--secundaria) 0%, transparent 20%);
-}
-
 /* ===== CABECALHO FIXO ===== */
 .topo {
     position: fixed;
@@ -65,43 +51,36 @@ body {
     color: transparent;
 }
 
-/* ===== MENU DE ABAS ===== */
-.navegacao {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid var(--vidro);
-    border-radius: 12px;
-    padding: 0.3rem;
-}
-
-.menu {
-    list-style: none;
+.indicador-conexao {
     display: flex;
+    align-items: center;
     gap: 0.5rem;
+    font-size: 0.85rem;
+    color: rgba(226, 232, 240, 0.8);
 }
 
-.menu li {
-    flex: 1;
+.bolinha {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #64748b;
+    transition: background 0.4s ease, box-shadow 0.4s ease;
 }
 
-.menu-link {
-    width: 100%;
-    padding: 0.6rem 1.2rem;
-    background: transparent;
-    border: none;
-    border-radius: 8px;
-    color: rgba(226, 232, 240, 0.7);
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
+.bolinha.online {
+    background: #4ade80;
+    box-shadow: 0 0 8px #4ade80;
+    animation: piscarOnline 2s infinite;
 }
 
-.menu-link:hover {
-    color: var(--claro);
+.bolinha.offline {
+    background: #f87171;
+    box-shadow: 0 0 8px #f87171;
 }
 
-.menu-link.menu-ativo {
-    background: linear-gradient(45deg, var(--primaria), var(--secundaria));
-    color: var(--claro);
+@keyframes piscarOnline {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
 }
 
 /* ===== CONTEUDO PRINCIPAL ===== */
@@ -113,12 +92,27 @@ body {
     padding: 6rem 2rem 2rem;
 }
 
-.aba-conteudo {
-    display: none;
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    max-width: 1100px;
+    width: 100%;
+    margin-bottom: 2rem;
 }
 
-.aba-conteudo.aba-visivel {
-    display: block;
+.painel {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--vidro);
+    border-radius: 16px;
+    padding: 1.5rem;
+    backdrop-filter: blur(8px);
+}
+
+.painel h3 {
+    margin-top: 0;
+    text-align: center;
+    color: var(--claro);
 }
 
 /* ===== VELOCIMETRO ===== */
@@ -199,27 +193,6 @@ body {
     border-radius: 12px;
     padding: 1rem;
 }
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    max-width: 1100px;
-    width: 100%;
-    margin-bottom: 2rem;
-}
-
-.painel {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid var(--vidro);
-    border-radius: 16px;
-    padding: 1.5rem;
-    backdrop-filter: blur(8px);
-}
-
-.painel h3 {
-    margin-top: 0;
-    text-align: center;
-}
 
 .estatisticas-grid {
     display: grid;
@@ -250,6 +223,7 @@ body {
     color: var(--secundaria);
 }
 
+/* ===== METADADOS ===== */
 .metadados-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -278,6 +252,8 @@ body {
     font-weight: bold;
     color: var(--claro);
 }
+
+/* ===== RESPONSIVO ===== */
 @media (max-width: 768px) {
     .topo {
         padding: 1rem;
@@ -307,39 +283,4 @@ body {
     .estatistica-valor {
         font-size: 0.85rem;
     }
-}
-.topo {
-    justify-content: space-between;
-}
-
-.indicador-conexao {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.85rem;
-    color: rgba(226, 232, 240, 0.8);
-}
-
-.bolinha {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #64748b;
-    transition: background 0.4s ease, box-shadow 0.4s ease;
-}
-
-.bolinha.online {
-    background: #4ade80;
-    box-shadow: 0 0 8px #4ade80;
-    animation: piscarOnline 2s infinite;
-}
-
-.bolinha.offline {
-    background: #f87171;
-    box-shadow: 0 0 8px #f87171;
-}
-
-@keyframes piscarOnline {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
 }
