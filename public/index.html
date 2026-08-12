@@ -1,121 +1,100 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Monitoramento de Nível - Canal 1</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #f2f2f2;
-    text-align: center;
-    padding: 20px;
-  }
-  .card {
-    background: white;
-    border-radius: 10px;
-    padding: 24px;
-    max-width: 520px;
-    margin: auto;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  }
-  .status {
-    padding: 16px;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 22px;
-    margin-bottom: 15px;
-    transition: background-color 0.3s ease;
-  }
-  .alto    { background: #d4edda; color: #155724; }
-  .baixo   { background: #f8d7da; color: #721c24; }
-  .offline { background: #e2e3e5; color: #383d41; }
-  .grafico {
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 10px;
-    margin-top: 15px;
-  }
-  small { color: #888; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Monitoramento de Nível</title>
+
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
-  <div class="card">
-    <h2>Monitoramento de Nível de Canal</h2>
-    <p><small>Canal 1</small></p>
+    <div class="particulas"></div>
 
-    <div id="statusBox" class="status offline">Aguardando dados...</div>
-    <p><small>Última leitura recebida em: <span id="ultimaHora">--</span></small></p>
+    <header class="topo">
+        <h1>Monitoramento de Nível de Canal</h1>
+    </header>
 
-    <div class="grafico">
-      <b>Histórico do nível (últimas leituras)</b>
-      <canvas id="graficoNivel" height="180"></canvas>
-    </div>
-  </div>
+    <main class="conteudo-principal">
+        <div class="dashboard-grid">
+            <section class="painel">
+                <h3>Nível Atual</h3>
+                <div class="velocimetro-wrapper">
+                    <svg viewBox="0 0 200 130" class="velocimetro">
+                        <defs>
+                            <linearGradient id="gradBaixo" x1="0%" y1="100%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#14532d" />
+                                <stop offset="100%" stop-color="#4ade80" />
+                            </linearGradient>
+                            <linearGradient id="gradMedio" x1="0%" y1="100%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#78350f" />
+                                <stop offset="100%" stop-color="#fde047" />
+                            </linearGradient>
+                            <linearGradient id="gradAlto" x1="0%" y1="100%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#7c2d12" />
+                                <stop offset="100%" stop-color="#fb923c" />
+                            </linearGradient>
+                            <linearGradient id="gradCritico" x1="0%" y1="100%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#7f1d1d" />
+                                <stop offset="100%" stop-color="#f87171" />
+                            </linearGradient>
+                        </defs>
 
-  <script>
-    const CANAL = 1;
+                        <path id="zonaBaixo"   class="zona" stroke="url(#gradBaixo)"   d="M 20 100 A 80 80 0 0 1 43.43 43.43" />
+                        <path id="zonaMedio"   class="zona" stroke="url(#gradMedio)"   d="M 43.43 43.43 A 80 80 0 0 1 100 20" />
+                        <path id="zonaAlto"    class="zona" stroke="url(#gradAlto)"    d="M 100 20 A 80 80 0 0 1 156.57 43.43" />
+                        <path id="zonaCritico" class="zona" stroke="url(#gradCritico)" d="M 156.57 43.43 A 80 80 0 0 1 180 100" />
 
-    const ctx = document.getElementById('graficoNivel').getContext('2d');
-    const grafico = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: [],
-        datasets: [{
-          label: 'Nível (1 = alto, 0 = baixo)',
-          data: [],
-          borderColor: '#28a745',
-          backgroundColor: 'rgba(40,167,69,0.15)',
-          stepped: true,
-          fill: true,
-          pointRadius: 2
-        }]
-      },
-      options: {
-        animation: false,
-        scales: {
-          y: { min: -0.1, max: 1.1, ticks: { stepSize: 1 } }
-        },
-        plugins: { legend: { display: false } }
-      }
-    });
+                        <line x1="28" y1="100" x2="12" y2="100" class="divisoria" />
+                        <line x1="49.09" y1="49.09" x2="37.77" y2="37.77" class="divisoria" />
+                        <line x1="100" y1="28" x2="100" y2="12" class="divisoria" />
+                        <line x1="150.91" y1="49.09" x2="162.23" y2="37.77" class="divisoria" />
+                        <line x1="172" y1="100" x2="188" y2="100" class="divisoria" />
 
-    async function atualizarStatus() {
-      try {
-        const respAtual = await fetch(`/api/leituras/atual?canal=${CANAL}`);
-        const atual = await respAtual.json();
-        const box = document.getElementById('statusBox');
+                        <text x="20" y="70" class="rotulo">BAIXO</text>
+                        <text x="64" y="15" class="rotulo">MÉDIO</text>
+                        <text x="136" y="15" class="rotulo">ALTO</text>
+                        <text x="180" y="70" class="rotulo">CRÍTICO</text>
 
-        if (!atual) {
-          box.className = 'status offline';
-          box.innerText = 'Nenhuma leitura recebida ainda';
-          return;
-        }
+                        <line id="ponteiro" x1="100" y1="100" x2="100" y2="30" />
+                        <circle cx="100" cy="100" r="7" class="pino" />
+                    </svg>
+                    <p id="statusTexto" class="velocimetro-label">Carregando...</p>
+                </div>
+            </section>
 
-        if (atual.nivel_alto) {
-          box.className = 'status alto';
-          box.innerText = 'NÍVEL ALTO';
-        } else {
-          box.className = 'status baixo';
-          box.innerText = 'NÍVEL BAIXO';
-        }
-        document.getElementById('ultimaHora').innerText = atual.criado_em;
+            <section class="painel">
+                <h3>Histórico</h3>
+                <div class="grafico-wrapper">
+                    <canvas id="graficoNivel" width="400" height="200"></canvas>
+                </div>
+                <div class="estatisticas-grid">
+                    <div class="estatistica">
+                        <span class="estatistica-label">Mínimo</span>
+                        <span id="statMin" class="estatistica-valor">--</span>
+                    </div>
+                    <div class="estatistica">
+                        <span class="estatistica-label">Máximo</span>
+                        <span id="statMax" class="estatistica-valor">--</span>
+                    </div>
+                    <div class="estatistica">
+                        <span class="estatistica-label">Média</span>
+                        <span id="statMedia" class="estatistica-valor">--</span>
+                    </div>
+                </div>
+            </section>
+        </div>
 
-        const respHist = await fetch(`/api/leituras/historico?canal=${CANAL}&limite=50`);
-        const historico = await respHist.json();
+        <div class="metadados-grid">
+            <div class="metadado-card">
+                <span class="metadado-label">Última atualização</span>
+                <span id="metaUltimaAtualizacao" class="metadado-valor">--</span>
+            </div>
+        </div>
+    </main>
 
-        grafico.data.labels = historico.map(l => (l.criado_em || '').slice(11, 19));
-        grafico.data.datasets[0].data = historico.map(l => l.nivel_alto);
-        grafico.update();
-      } catch (erro) {
-        console.log('Erro ao atualizar status', erro);
-      }
-    }
-
-    setInterval(atualizarStatus, 5000);
-    atualizarStatus();
-  </script>
+    <script src="/script.js"></script>
 </body>
 </html>
