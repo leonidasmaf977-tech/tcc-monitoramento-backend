@@ -12,85 +12,111 @@
 
 <body>
     <header class="topo">
-        <h1>Monitoramento de Nível de Canal</h1>
-        <div class="indicador-conexao">
-            <span id="bolinhaStatus" class="bolinha"></span>
-            <span id="textoConexao">Verificando...</span>
-        </div>
-    </header>
+    <div class="logo">
+        <span class="logo-icone">◈</span>
+        <span class="logo-texto">CanalMonitor</span>
+    </div>
+
+    <nav class="menu-nav">
+        <a href="#inicio">Início</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#velocimetro">Nível Atual</a>
+        <a href="#historico">Histórico</a>
+    </nav>
+
+    <div class="indicador-conexao">
+        <span id="bolinhaStatus" class="bolinha"></span>
+        <span id="textoConexao">Verificando...</span>
+    </div>
+</header>
+
+<section id="inicio" class="hero">
+    <h1 class="hero-titulo">
+        Monitoramento <span class="destaque">Inteligente</span><br>
+        de Nível de Canal
+    </h1>
+    <p class="hero-subtitulo">
+        Detecção de nível em tempo real, alertas automáticos e
+        monitoramento remoto via ESP32, acessível de qualquer lugar.
+    </p>
+    <div class="hero-botoes">
+        <a href="#velocimetro" class="btn btn-primario">
+            Ver Nível Atual
+            <span class="btn-icone">→</span>
+        </a>
+        <a href="#historico" class="btn btn-secundario">
+            Ver Histórico
+            <span class="btn-icone">→</span>
+        </a>
+    </div>
+</section>
 
     <main class="conteudo-principal">
-        <section class="secao-hero">
-            <div class="sobre-projeto">
-                <h2>Sobre o Projeto</h2>
+        <section class="secao-sobre">
+            <h2 class="secao-titulo">Sobre o Projeto</h2>
+            <p class="secao-subtitulo">Trabalho de Conclusão de Curso (TCC)</p>
+            <div class="sobre-texto">
                 <p>
-                    Este sistema foi desenvolvido como Trabalho de Conclusão de Curso (TCC)
-                    com o objetivo de monitorar remotamente o nível de água em canais,
-                    prevenindo riscos de transbordamento e alagamentos.
+                    Este sistema foi desenvolvido com o objetivo de monitorar remotamente o nível de água em canais, prevenindo riscos de transbordamento e alagamentos.
+
+Utilizando um microcontrolador ESP32 conectado a sensores de nível, o sistema captura o estado da água em quatro faixas — baixo, médio, alto e crítico e envia essas informações em tempo real para este painel.
+
+O objetivo é oferecer uma solução acessível e de baixo custo para monitoramento remoto, permitindo ação preventiva antes que situações de risco se agravem.
                 </p>
-                <p>
-                    Utilizando um microcontrolador ESP32 conectado a sensores de nível
-                    (boias), o sistema captura o estado da água em quatro faixas —
-                    baixo, médio, alto e crítico — e envia essas informações em tempo
-                    real para este painel, acessível de qualquer lugar com conexão
-                    à internet.
-                </p>
-                <p>
-                    O objetivo é oferecer uma solução acessível e de baixo custo para
-                    monitoramento remoto, permitindo ação preventiva antes que
-                    situações de risco se agravem.
-                </p>
-            </div>
-
-            <div class="painel painel-velocimetro">
-                <h3>Nível Atual</h3>
-                <div class="velocimetro-wrapper">
-                    <svg viewBox="0 0 200 130" class="velocimetro">
-                        <defs>
-                            <linearGradient id="gradBaixo" x1="0%" y1="100%" x2="100%" y2="0%">
-                                <stop offset="0%" stop-color="#14532d" />
-                                <stop offset="100%" stop-color="#4ade80" />
-                            </linearGradient>
-                            <linearGradient id="gradMedio" x1="0%" y1="100%" x2="100%" y2="0%">
-                                <stop offset="0%" stop-color="#78350f" />
-                                <stop offset="100%" stop-color="#fde047" />
-                            </linearGradient>
-                            <linearGradient id="gradAlto" x1="0%" y1="100%" x2="100%" y2="0%">
-                                <stop offset="0%" stop-color="#7c2d12" />
-                                <stop offset="100%" stop-color="#fb923c" />
-                            </linearGradient>
-                            <linearGradient id="gradCritico" x1="0%" y1="100%" x2="100%" y2="0%">
-                                <stop offset="0%" stop-color="#7f1d1d" />
-                                <stop offset="100%" stop-color="#f87171" />
-                            </linearGradient>
-                        </defs>
-
-                        <path id="zonaBaixo"   class="zona" stroke="url(#gradBaixo)"   d="M 20 100 A 80 80 0 0 1 43.43 43.43" />
-                        <path id="zonaMedio"   class="zona" stroke="url(#gradMedio)"   d="M 43.43 43.43 A 80 80 0 0 1 100 20" />
-                        <path id="zonaAlto"    class="zona" stroke="url(#gradAlto)"    d="M 100 20 A 80 80 0 0 1 156.57 43.43" />
-                        <path id="zonaCritico" class="zona" stroke="url(#gradCritico)" d="M 156.57 43.43 A 80 80 0 0 1 180 100" />
-
-                        <line x1="28" y1="100" x2="12" y2="100" class="divisoria" />
-                        <line x1="49.09" y1="49.09" x2="37.77" y2="37.77" class="divisoria" />
-                        <line x1="100" y1="28" x2="100" y2="12" class="divisoria" />
-                        <line x1="150.91" y1="49.09" x2="162.23" y2="37.77" class="divisoria" />
-                        <line x1="172" y1="100" x2="188" y2="100" class="divisoria" />
-
-                        <text x="20" y="70" class="rotulo">BAIXO</text>
-                        <text x="64" y="15" class="rotulo">MÉDIO</text>
-                        <text x="136" y="15" class="rotulo">ALTO</text>
-                        <text x="180" y="70" class="rotulo">CRÍTICO</text>
-
-                        <line id="ponteiro" x1="100" y1="100" x2="100" y2="30" />
-                        <circle cx="100" cy="100" r="7" class="pino" />
-                    </svg>
-                    <p id="statusTexto" class="velocimetro-label">Carregando...</p>
-                </div>
+                
             </div>
         </section>
 
-        <section class="painel painel-historico">
-            <h3>Histórico</h3>
+        <section id="velocimetro" class="painel painel-velocimetro">
+            <h3 class="secao-titulo">Nível Atual</h3>
+            <p class="secao-subtitulo">Leitura em tempo real do sensor</p>
+            <div class="velocimetro-wrapper">
+                <svg viewBox="0 0 200 130" class="velocimetro">
+                    <defs>
+                        <linearGradient id="gradBaixo" x1="0%" y1="100%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#14532d" />
+                            <stop offset="100%" stop-color="#4ade80" />
+                        </linearGradient>
+                        <linearGradient id="gradMedio" x1="0%" y1="100%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#78350f" />
+                            <stop offset="100%" stop-color="#fde047" />
+                        </linearGradient>
+                        <linearGradient id="gradAlto" x1="0%" y1="100%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#7c2d12" />
+                            <stop offset="100%" stop-color="#fb923c" />
+                        </linearGradient>
+                        <linearGradient id="gradCritico" x1="0%" y1="100%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#7f1d1d" />
+                            <stop offset="100%" stop-color="#f87171" />
+                        </linearGradient>
+                    </defs>
+
+                    <path id="zonaBaixo"   class="zona" stroke="url(#gradBaixo)"   d="M 20 100 A 80 80 0 0 1 43.43 43.43" />
+                    <path id="zonaMedio"   class="zona" stroke="url(#gradMedio)"   d="M 43.43 43.43 A 80 80 0 0 1 100 20" />
+                    <path id="zonaAlto"    class="zona" stroke="url(#gradAlto)"    d="M 100 20 A 80 80 0 0 1 156.57 43.43" />
+                    <path id="zonaCritico" class="zona" stroke="url(#gradCritico)" d="M 156.57 43.43 A 80 80 0 0 1 180 100" />
+
+                    <line x1="28" y1="100" x2="12" y2="100" class="divisoria" />
+                    <line x1="49.09" y1="49.09" x2="37.77" y2="37.77" class="divisoria" />
+                    <line x1="100" y1="28" x2="100" y2="12" class="divisoria" />
+                    <line x1="150.91" y1="49.09" x2="162.23" y2="37.77" class="divisoria" />
+                    <line x1="172" y1="100" x2="188" y2="100" class="divisoria" />
+
+                    <text x="20" y="70" class="rotulo">BAIXO</text>
+                    <text x="64" y="15" class="rotulo">MÉDIO</text>
+                    <text x="136" y="15" class="rotulo">ALTO</text>
+                    <text x="180" y="70" class="rotulo">CRÍTICO</text>
+
+                    <line id="ponteiro" x1="100" y1="100" x2="100" y2="30" />
+                    <circle cx="100" cy="100" r="7" class="pino" />
+                </svg>
+                <p id="statusTexto" class="velocimetro-label">Carregando...</p>
+            </div>
+        </section>
+
+        <section id="historico" class="painel painel-historico">
+            <h3 class="secao-titulo">Histórico</h3>
+            <p class="secao-subtitulo">Últimas leituras registradas</p>
             <div class="grafico-wrapper">
                 <canvas id="graficoNivel" width="800" height="250"></canvas>
             </div>
@@ -117,6 +143,10 @@
             </div>
         </div>
     </main>
+
+    <footer class="rodape">
+        <p>TCC — Monitoramento de Nível de Canal via ESP32</p>
+    </footer>
 
     <script src="/script.js"></script>
 </body>
