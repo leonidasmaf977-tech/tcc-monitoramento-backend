@@ -12,58 +12,66 @@
 
 <body>
     <header class="topo">
-    <div class="logo">
-        <span class="logo-icone">◈</span>
-        <span class="logo-texto">CanalMonitor</span>
-    </div>
+        <div class="logo">
+            <span class="logo-icone">◈</span>
+            <span class="logo-texto">CanalMonitor</span>
+        </div>
 
-    <nav class="menu-nav">
-        <a href="#inicio">Início</a>
-        <a href="#sobre">Sobre</a>
-        <a href="#velocimetro">Nível Atual</a>
-        <a href="#historico">Histórico</a>
-    </nav>
+        <nav class="menu-nav">
+            <a href="#inicio">Início</a>
+            <a href="#sobre">Sobre</a>
+            <a href="#velocimetro">Nível Atual</a>
+            <a href="#historico">Histórico</a>
+        </nav>
 
-    <div class="indicador-conexao">
-        <span id="bolinhaStatus" class="bolinha"></span>
-        <span id="textoConexao">Verificando...</span>
-    </div>
-</header>
+        <div class="indicador-conexao">
+            <span id="bolinhaStatus" class="bolinha"></span>
+            <span id="textoConexao">Verificando...</span>
+        </div>
+    </header>
 
-<section id="inicio" class="hero">
-    <h1 class="hero-titulo">
-        Monitoramento <span class="destaque">Inteligente</span><br>
-        de Nível de Canal
-    </h1>
-    <p class="hero-subtitulo">
-        Detecção de nível em tempo real, alertas automáticos e
-        monitoramento remoto via ESP32, acessível de qualquer lugar.
-    </p>
-    <div class="hero-botoes">
-        <a href="#velocimetro" class="btn btn-primario">
-            Ver Nível Atual
-            <span class="btn-icone">→</span>
-        </a>
-        <a href="#historico" class="btn btn-secundario">
-            Ver Histórico
-            <span class="btn-icone">→</span>
-        </a>
-    </div>
-</section>
+    <section id="inicio" class="hero">
+        <h1 class="hero-titulo">
+            Monitoramento <span class="destaque">Inteligente</span><br>
+            de Nível de Canal
+        </h1>
+        <p class="hero-subtitulo">
+            Detecção de nível em tempo real, alertas automáticos e
+            monitoramento remoto via ESP32, acessível de qualquer lugar.
+        </p>
+        <div class="hero-botoes">
+            <a href="#velocimetro" class="btn btn-primario">
+                Ver Nível Atual
+                <span class="btn-icone">→</span>
+            </a>
+            <a href="#historico" class="btn btn-secundario">
+                Ver Histórico
+                <span class="btn-icone">→</span>
+            </a>
+        </div>
+    </section>
 
     <main class="conteudo-principal">
-        <section class="secao-sobre">
+        <section id="sobre" class="secao-sobre">
             <h2 class="secao-titulo">Sobre o Projeto</h2>
             <p class="secao-subtitulo">Trabalho de Conclusão de Curso (TCC)</p>
             <div class="sobre-texto">
                 <p>
-                    Este sistema foi desenvolvido com o objetivo de monitorar remotamente o nível de água em canais, prevenindo riscos de transbordamento e alagamentos.
-
-Utilizando um microcontrolador ESP32 conectado a sensores de nível, o sistema captura o estado da água em quatro faixas — baixo, médio, alto e crítico e envia essas informações em tempo real para este painel.
-
-O objetivo é oferecer uma solução acessível e de baixo custo para monitoramento remoto, permitindo ação preventiva antes que situações de risco se agravem.
+                    Este sistema foi desenvolvido com o objetivo de monitorar
+                    remotamente o nível de água em canais, prevenindo riscos
+                    de transbordamento e alagamentos.
                 </p>
-                
+                <p>
+                    Utilizando um microcontrolador ESP32 conectado a sensores
+                    de nível (boias), o sistema captura o estado da água em
+                    quatro faixas — baixo, médio, alto e crítico — e envia
+                    essas informações em tempo real para este painel.
+                </p>
+                <p>
+                    O objetivo é oferecer uma solução acessível e de baixo
+                    custo para monitoramento remoto, permitindo ação
+                    preventiva antes que situações de risco se agravem.
+                </p>
             </div>
         </section>
 
